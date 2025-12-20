@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h2>Student Dashboard</h2>
+
+  <button onclick="loadGrades()">Load Grades</button>
+
+  <ul id="grades"></ul>
+
+  <script>
+    const API = "http://localhost:5000/api";
+    const token = localStorage.getItem("token");
+
+    async function loadGrades() {
+      const res = await fetch(`${API}/academic/grades`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const grades = await res.json();
+
+      document.getElementById("grades").innerHTML = grades
+        .map(g => `<li>${g.name}</li>`)
+        .join("");
+    }
+  </script>
+
+</body>
+</html>
